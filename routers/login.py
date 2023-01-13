@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+from db.mongo import consult, insert
 
 router = APIRouter()
 
@@ -8,19 +9,10 @@ class User(BaseModel):
     username: str
     password: str
 
-users = [
-    {
-        "id": 1,
-        "username": "facundo",
-        "password": "123"
-    }
-]
 
 @router.post("/sign-up", tags=["sign-up"])
 def sign_up(user: User):
-
-    users.append(user)
-
+    x = insert("users", dict(user))
     return user
 
 
